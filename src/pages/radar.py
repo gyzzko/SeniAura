@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 import pandas as pd
 from ..data import load_data
 
-gdf_merged, variable_dict, category_dict, sens_dict = load_data()
+gdf_merged, variable_dict, category_dict, sens_dict, _ = load_data()
 
 # Layout — no local filters, everything comes from sidebar
 layout = html.Div(style={'height': '100vh', 'display': 'flex', 'flexDirection': 'column'}, children=[

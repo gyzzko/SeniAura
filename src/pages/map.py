@@ -7,7 +7,7 @@ import pandas as pd
 from ..data import load_data
 
 # Load shared data
-gdf_merged, variable_dict, category_dict, sens_dict = load_data()
+gdf_merged, variable_dict, category_dict, sens_dict, _ = load_data()
 
 layout = html.Div(style={'height': '100vh', 'display': 'flex', 'flexDirection': 'column'}, children=[
     # Header
@@ -228,15 +228,17 @@ def update_map(ind, patho, slider_vals, epci_selection, social, offre, env, slid
                 top_idx = top_gap.index
                 hl_gap = gdf_merged.loc[top_idx]
                 if not hl_gap.empty:
-                    fig.add_trace(go.Choropleth(
-                        geojson=hl_gap.geometry.__geo_interface__, locations=hl_gap.index,
-                        z=[1]*len(hl_gap),
-                        colorscale=[[0, 'rgba(230,126,34,0.15)'], [1, 'rgba(230,126,34,0.15)']],
-                        showscale=False,
-                        marker_line_width=4, marker_line_color='#e67e22',
-                        text=hl_gap['nom_EPCI'],
-                        hovertemplate="<b>%{text}</b><br>⚠️ Écart diagnostique élevé<extra></extra>"
-                    ))
+                    pass
+                    # DISABLED by user request
+                    # fig.add_trace(go.Choropleth(
+                    #     geojson=hl_gap.geometry.__geo_interface__, locations=hl_gap.index,
+                    #     z=[1]*len(hl_gap),
+                    #     colorscale=[[0, 'rgba(230,126,34,0.15)'], [1, 'rgba(230,126,34,0.15)']],
+                    #     showscale=False,
+                    #     marker_line_width=4, marker_line_color='#e67e22',
+                    #     text=hl_gap['nom_EPCI'],
+                    #     hovertemplate="<b>%{text}</b><br>⚠️ Écart diagnostique élevé<extra></extra>"
+                    # ))
 
     fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}, dragmode=False)

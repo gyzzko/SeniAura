@@ -6,7 +6,7 @@ import os
 from ..data import load_data, PROJECT_ROOT
 
 # Load data
-gdf_merged, variable_dict, category_dict, _ = load_data()
+gdf_merged, variable_dict, category_dict, _, description_dict = load_data()
 
 # Group variables by category
 def get_vars_by_category(target_cat):
@@ -15,7 +15,8 @@ def get_vars_by_category(target_cat):
     for var_code, label in variable_dict.items():
         cat = str(category_dict.get(var_code, 'Autre')).lower()
         if cat == target_cat.lower():
-            result.append({'code': var_code, 'label': label})
+            desc = description_dict.get(var_code, "")
+            result.append({'code': var_code, 'label': label, 'desc': desc})
     return sorted(result, key=lambda x: x['label'])
 
 def make_var_table(vars_list):
@@ -31,6 +32,7 @@ def make_var_table(vars_list):
                 'alignItems': 'center', 'transition': 'background-color 0.2s'
             }, children=[
                 html.Div(item['label'], style={'flex': '1', 'fontWeight': '500'}),
+                html.Div(item['desc'], style={'flex': '2', 'fontSize': '0.9rem', 'color': '#555', 'padding': '0 10px'}),
                 html.Div(item['code'], style={'width': '200px', 'fontSize': '0.85rem', 'color': '#7f8c8d', 'fontFamily': 'monospace'}),
             ])
         )
@@ -41,6 +43,7 @@ def make_var_table(vars_list):
             'borderBottom': '2px solid #3498db', 'backgroundColor': '#f8f9fa', 'borderRadius': '5px 5px 0 0'
         }, children=[
             html.Div("Variable", style={'flex': '1'}),
+            html.Div("Description", style={'flex': '2', 'padding': '0 10px'}),
             html.Div("Code", style={'width': '200px'}),
         ]),
         *rows

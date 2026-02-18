@@ -8,7 +8,7 @@ from src.pages import home, map, radar, methodology, clustering
 from src.data import load_data
 
 # Load data for filter options
-gdf_merged, variable_dict, category_dict, _ = load_data()
+gdf_merged, variable_dict, category_dict, _, _ = load_data()
 
 def get_options(target_cats):
     options = []
@@ -82,9 +82,9 @@ sidebar = html.Div(className='sidebar', children=[
         dcc.Link(href='/methodologie', className='nav-link', children=[
             html.I(className="fas fa-book", style={'marginRight': '10px'}), "Méthodologie"
         ]),
-        dcc.Link(href='/clustering', className='nav-link', children=[
-            html.I(className="fas fa-project-diagram", style={'marginRight': '10px'}), "Clustering"
-        ]),
+        # dcc.Link(href='/clustering', className='nav-link', children=[
+        #     html.I(className="fas fa-project-diagram", style={'marginRight': '10px'}), "Clustering"
+        # ]),
     ]),
 
     shared_filters,

@@ -23,6 +23,8 @@ def load_data():
         gdf_merged (GeoDataFrame): The merged data ready for visualization.
         variable_dict (dict): Dictionary mapping column names to human-readable labels.
         category_dict (dict): Dictionary mapping column names to their category.
+        sens_dict (dict): Dictionary mapping column names to their sens.
+        description_dict (dict): Dictionary mapping column names to their descriptions.
     """
 
     # 1. Load GeoJSON
@@ -43,6 +45,7 @@ def load_data():
     variable_dict = {}
     category_dict = {}
     sens_dict = {}
+    description_dict = {}
     
     # Path to the new CSV
     DICT_PATH = os.path.join(DATA_DIR_DASH, "dictionnaire_variables.csv")
@@ -80,6 +83,12 @@ def load_data():
                 sens_dict[var_code] = s if s != 0 else -1
             except:
                 sens_dict[var_code] = -1
+
+            # Description (raw)
+            if 'Description' in row and pd.notna(row['Description']):
+                description_dict[var_code] = str(row['Description']).strip()
+            else:
+                description_dict[var_code] = ""
             
     # Fallback/Overrides for critical variables if missing in CSV or strictly needed
     overrides = {
@@ -100,6 +109,8 @@ def load_data():
              # Default sens
              if k not in sens_dict:
                  sens_dict[k] = -1
+             if k not in description_dict:
+                 description_dict[k] = v
 
     # 4. Processing
     # Ensure numeric for known plotting variables
@@ -120,8 +131,9 @@ def load_data():
             variable_dict['Taux_CNR'] = 'Incidence Globale CNR'
             category_dict['Taux_CNR'] = 'santé'
             sens_dict['Taux_CNR'] = -1
+            description_dict['Taux_CNR'] = "Incidence Globale CNR (Somme des taux)"
     
     # Merge
     gdf_merged = gdf_epci.merge(df, left_on='EPCI_CODE', right_on='CODE_EPCI', how='left')
     
-    return gdf_merged, variable_dict, category_dict, sens_dict
+    return gdf_merged, variable_dict, category_dict, sens_dict, description_dict
